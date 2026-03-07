@@ -1,8 +1,7 @@
 package com.flowops.auth.service;
 
 import com.flowops.auth.entity.UserEntity;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +28,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(UserEntity user) {
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.getRole());
         claims.put("tenantId", user.getTenantId());
@@ -44,6 +44,37 @@ public class JwtServiceImpl implements JwtService {
                 .setExpiration(expiryDate)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    @Override
+    public String extractUsername(String token) {
+
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    @Override
+    public boolean isTokenValid(String token, UserEntity user) {
+
+        String username = extractUsername(token);
+
+        return username.equals(user.getEmail()) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+
+        Date expiration = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+
+        return expiration.before(new Date());
     }
 
     @Override
