@@ -1,10 +1,13 @@
 package com.flowops.auth.service;
 
+import com.flowops.auth.dto.LoginRequest;
+import com.flowops.auth.dto.LoginResponse;
 import com.flowops.auth.dto.RegisterRequest;
 import com.flowops.auth.dto.RegisterResponse;
 import com.flowops.auth.entity.TenantEntity;
 import com.flowops.auth.entity.UserEntity;
 import com.flowops.auth.exception.EmailAlreadyExistsException;
+import com.flowops.auth.exception.InvalidCredentialsException;
 import com.flowops.auth.repository.TenantRepository;
 import com.flowops.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ public class AuthServiceImpl implements AuthService {
     private final TenantRepository tenantRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Override
     public RegisterResponse register(RegisterRequest request) {
@@ -59,6 +63,30 @@ public class AuthServiceImpl implements AuthService {
                 .email(savedUser.getEmail())
                 .role(savedUser.getRole())
                 .message("Tenant and admin user registered successfully")
+                .build();
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+        UserEntity user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(InvalidCredentialsException::new);
+
+        boolean passwordMatches = passwordEncoder.matches(request.getPassword(), user.getPasswordHash());
+
+        if (!passwordMatches) {
+            throw new InvalidCredentialsException();
+        }
+
+        String token = jwtService.generateToken(user);
+
+        return LoginResponse.builder()
+                .accessToken(token)
+                .tokenType("Bearer")
+                .expiresIn(jwtService.getExpirationTime())
+                .userId(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .tenantId(user.getTenantId())
                 .build();
     }
 }
