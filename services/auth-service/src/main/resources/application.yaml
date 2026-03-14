@@ -18,3 +18,9 @@ spring:
 jwt:
   secret: your-very-secure-secret-key-that-is-at-least-32-characters
   expiration: 3600000
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
