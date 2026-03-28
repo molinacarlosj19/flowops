@@ -12,4 +12,10 @@ public interface WorkflowService {
     List<WorkflowResponse> listWorkflows(String tenantId);
 
     WorkflowResponse getWorkflow(String tenantId, String workflowId);
+
+    WorkflowResponse updateWorkflowStatus(
+            String tenantId,
+            String workflowId,
+            String status
+    );
 }

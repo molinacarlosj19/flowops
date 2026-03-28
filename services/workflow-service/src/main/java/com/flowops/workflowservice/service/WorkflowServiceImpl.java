@@ -57,4 +57,32 @@ public class WorkflowServiceImpl implements WorkflowService {
                 .updatedAt(entity.getUpdatedAt())
                 .build();
     }
+
+    @Override
+    public WorkflowResponse updateWorkflowStatus(
+            String tenantId,
+            String workflowId,
+            String status
+    ) {
+
+        WorkflowEntity workflow = workflowRepository
+                .findByIdAndTenantId(workflowId, tenantId)
+                .orElseThrow(() -> new WorkflowNotFoundException(workflowId));
+
+        validateStatus(status);
+
+        workflow.setStatus(status);
+        workflow.setUpdatedAt(java.time.Instant.now());
+
+        WorkflowEntity updated = workflowRepository.save(workflow);
+
+        return mapToResponse(updated);
+    }
+
+    private void validateStatus(String status) {
+
+        if (!status.equals("ACTIVE") && !status.equals("INACTIVE")) {
+            throw new IllegalArgumentException("Invalid workflow status: " + status);
+        }
+    }
 }

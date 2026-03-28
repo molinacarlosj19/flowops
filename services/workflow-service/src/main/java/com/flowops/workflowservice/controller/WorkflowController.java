@@ -1,6 +1,7 @@
 package com.flowops.workflowservice.controller;
 
 import com.flowops.workflowservice.dto.CreateWorkflowRequest;
+import com.flowops.workflowservice.dto.UpdateWorkflowStatusRequest;
 import com.flowops.workflowservice.dto.WorkflowResponse;
 import com.flowops.workflowservice.service.WorkflowService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,5 +46,19 @@ public class WorkflowController {
             @PathVariable String workflowId
     ) {
         return workflowService.getWorkflow(tenantId, workflowId);
+    }
+
+    @PatchMapping("/{workflowId}/status")
+    @Operation(summary = "Update workflow status")
+    public WorkflowResponse updateWorkflowStatus(
+            @RequestHeader("X-Tenant-Id") String tenantId,
+            @PathVariable String workflowId,
+            @Valid @RequestBody UpdateWorkflowStatusRequest request
+    ) {
+        return workflowService.updateWorkflowStatus(
+                tenantId,
+                workflowId,
+                request.getStatus()
+        );
     }
 }

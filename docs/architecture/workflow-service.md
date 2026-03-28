@@ -88,3 +88,15 @@ The service exposes OpenAPI documentation through Swagger UI for local developme
 
 Default URL:
 - /swagger-ui/index.html
+
+### Update Workflow Status
+
+Allows enabling or disabling a workflow.
+
+PATCH `/api/v1/workflows/{id}/status`
+
+Body:
+
+{
+"status": "ACTIVE | INACTIVE"
+}
