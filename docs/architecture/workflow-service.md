@@ -81,3 +81,10 @@ Future evolution may introduce event-driven patterns for:
 - workflow updated
 - workflow execution started
 - workflow execution completed
+
+## Documentation
+
+The service exposes OpenAPI documentation through Swagger UI for local development and testing.
+
+Default URL:
+- /swagger-ui/index.html
