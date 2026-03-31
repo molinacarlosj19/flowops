@@ -50,4 +50,15 @@ public class GlobalExceptionHandler {
         error.put("message", ex.getMessage());
         return error;
     }
+
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, Object> handleInvalidEnum(org.springframework.http.converter.HttpMessageNotReadableException ex) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("timestamp", Instant.now());
+        error.put("status", 400);
+        error.put("error", "Bad Request");
+        error.put("message", "Invalid request body or enum value");
+        return error;
+    }
 }

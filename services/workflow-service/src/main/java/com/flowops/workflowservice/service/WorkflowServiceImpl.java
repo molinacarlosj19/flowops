@@ -3,6 +3,7 @@ package com.flowops.workflowservice.service;
 import com.flowops.workflowservice.dto.CreateWorkflowRequest;
 import com.flowops.workflowservice.dto.WorkflowResponse;
 import com.flowops.workflowservice.entity.WorkflowEntity;
+import com.flowops.workflowservice.entity.WorkflowStatus;
 import com.flowops.workflowservice.exception.WorkflowNotFoundException;
 import com.flowops.workflowservice.repository.WorkflowRepository;
 import lombok.RequiredArgsConstructor;
@@ -62,14 +63,13 @@ public class WorkflowServiceImpl implements WorkflowService {
     public WorkflowResponse updateWorkflowStatus(
             String tenantId,
             String workflowId,
-            String status
+            WorkflowStatus status
     ) {
 
         WorkflowEntity workflow = workflowRepository
                 .findByIdAndTenantId(workflowId, tenantId)
                 .orElseThrow(() -> new WorkflowNotFoundException(workflowId));
 
-        validateStatus(status);
 
         workflow.setStatus(status);
         workflow.setUpdatedAt(java.time.Instant.now());
@@ -77,12 +77,5 @@ public class WorkflowServiceImpl implements WorkflowService {
         WorkflowEntity updated = workflowRepository.save(workflow);
 
         return mapToResponse(updated);
-    }
-
-    private void validateStatus(String status) {
-
-        if (!status.equals("ACTIVE") && !status.equals("INACTIVE")) {
-            throw new IllegalArgumentException("Invalid workflow status: " + status);
-        }
     }
 }

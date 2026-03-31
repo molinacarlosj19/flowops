@@ -1,5 +1,6 @@
 package com.flowops.workflowservice.dto;
 
+import com.flowops.workflowservice.entity.WorkflowStatus;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -11,5 +12,5 @@ import lombok.*;
 public class UpdateWorkflowStatusRequest {
 
     @NotBlank
-    private String status;
+    private WorkflowStatus status;
 }

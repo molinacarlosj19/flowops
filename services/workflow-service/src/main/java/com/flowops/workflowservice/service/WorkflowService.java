@@ -2,6 +2,7 @@ package com.flowops.workflowservice.service;
 
 import com.flowops.workflowservice.dto.CreateWorkflowRequest;
 import com.flowops.workflowservice.dto.WorkflowResponse;
+import com.flowops.workflowservice.entity.WorkflowStatus;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ public interface WorkflowService {
     WorkflowResponse updateWorkflowStatus(
             String tenantId,
             String workflowId,
-            String status
+            WorkflowStatus status
     );
 }

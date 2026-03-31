@@ -1,9 +1,6 @@
 package com.flowops.workflowservice.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
@@ -32,8 +29,9 @@ public class WorkflowEntity {
     @Column(nullable = false)
     private String triggerType;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private WorkflowStatus status;
 
     @Column(nullable = false)
     private Instant createdAt;
@@ -55,7 +53,7 @@ public class WorkflowEntity {
                 .name(name)
                 .description(description)
                 .triggerType(triggerType)
-                .status("ACTIVE")
+                .status(WorkflowStatus.ACTIVE)
                 .createdAt(now)
                 .updatedAt(now)
                 .build();

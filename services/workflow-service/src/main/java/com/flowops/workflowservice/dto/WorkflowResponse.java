@@ -1,5 +1,6 @@
 package com.flowops.workflowservice.dto;
 
+import com.flowops.workflowservice.entity.WorkflowStatus;
 import lombok.*;
 
 import java.time.Instant;
@@ -16,7 +17,7 @@ public class WorkflowResponse {
     private String name;
     private String description;
     private String triggerType;
-    private String status;
+    private WorkflowStatus status;
     private Instant createdAt;
     private Instant updatedAt;
 }
