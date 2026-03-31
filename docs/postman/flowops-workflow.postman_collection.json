@@ -1,0 +1,108 @@
+{
+    "info": {
+      "name": "FlowOps - Workflow Service",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Create Workflow",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "X-Tenant-Id",
+              "value": "{{tenantId}}"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Daily invoice reminder\",\n  \"description\": \"Send reminder for unpaid invoices\",\n  \"triggerType\": \"SCHEDULED\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{workflowBaseUrl}}/api/v1/workflows",
+            "host": ["{{workflowBaseUrl}}"],
+            "path": ["api", "v1", "workflows"]
+          }
+        }
+      },
+      {
+        "name": "List Workflows",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "X-Tenant-Id",
+              "value": "{{tenantId}}"
+            }
+          ],
+          "url": {
+            "raw": "{{workflowBaseUrl}}/api/v1/workflows",
+            "host": ["{{workflowBaseUrl}}"],
+            "path": ["api", "v1", "workflows"]
+          }
+        }
+      },
+      {
+        "name": "Get Workflow By Id",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "X-Tenant-Id",
+              "value": "{{tenantId}}"
+            }
+          ],
+          "url": {
+            "raw": "{{workflowBaseUrl}}/api/v1/workflows/{{workflowId}}",
+            "host": ["{{workflowBaseUrl}}"],
+            "path": ["api", "v1", "workflows", "{{workflowId}}"]
+          }
+        }
+      },
+      {
+        "name": "Update Workflow Status",
+        "request": {
+          "method": "PATCH",
+          "header": [
+            {
+              "key": "X-Tenant-Id",
+              "value": "{{tenantId}}"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"status\": \"INACTIVE\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{workflowBaseUrl}}/api/v1/workflows/{{workflowId}}/status",
+            "host": ["{{workflowBaseUrl}}"],
+            "path": ["api", "v1", "workflows", "{{workflowId}}", "status"]
+          }
+        }
+      }
+    ],
+    "variable": [
+      {
+        "key": "workflowBaseUrl",
+        "value": "http://localhost:8082"
+      },
+      {
+        "key": "tenantId",
+        "value": "tenant-123"
+      },
+      {
+        "key": "workflowId",
+        "value": ""
+      }
+    ]
+  }

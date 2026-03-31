@@ -52,6 +52,9 @@ Tenant isolation is enforced using the `tenantId` claim from the JWT token issue
 
 ### Status
 
+Workflow status is modeled using a strongly typed enum.
+
+Supported values:
 - ACTIVE
 - INACTIVE
 
